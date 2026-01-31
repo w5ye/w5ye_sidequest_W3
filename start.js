@@ -8,130 +8,160 @@
 // ------------------------------------------------------------
 // Start screen visuals
 // ------------------------------------------------------------
-// drawStart() is called from main.js only when:
-// currentScreen === "start"
+// ------------------------------------------------------------
+// Helper: drawChefHat()
+// ------------------------------------------------------------
+function drawChefHat(x, y, scaleFactor = 1.2) {
+  // slightly bigger by default
+  push();
+  translate(x, y);
+  scale(scaleFactor);
+  noStroke();
+  fill(255);
+
+  // ---- Top puffs ----
+  ellipse(-35, 0, 50, 35);
+  ellipse(0, -15, 60, 60); // bigger puff
+  ellipse(35, 0, 50, 35);
+
+  // ---- Base of the hat ----
+  rectMode(CENTER);
+  rect(0, 25, 100, 30, 8);
+
+  // ---- Texture lines ----
+  stroke(200); // light gray lines
+  strokeWeight(2);
+  // draw 3 vertical lines evenly spaced
+  line(-25, 15, -25, 35);
+  line(0, 15, 0, 35);
+  line(25, 15, 25, 35);
+
+  pop();
+}
+
+// ------------------------------------------------------------
+// Start screen visuals
+// ------------------------------------------------------------
 function drawStart() {
-  // Background colour for the start screen
-  background(180, 225, 220); // soft teal background
+  // ---- Background ----
+  background(255, 243, 153); // yellow
+
+  // ---- Chef hat icon ----
+  drawChefHat(width / 2, 100, 1); // Make sure drawChefHat is defined
 
   // ---- Title text ----
-  fill(30, 50, 60);
-  textSize(46);
+  fill(64, 30, 7); // brown
+  textSize(60);
+  textFont("Comic Sans MS");
   textAlign(CENTER, CENTER);
-  text("Win or Lose", width / 2, 180);
+  text("Chef It Up!", width / 2, 225);
 
-  // ---- Buttons (data only) ----
-  // These objects store the position/size/label for each button.
-  // Using objects makes it easy to pass them into drawButton()
-  // and also reuse the same information for hover checks.
+  // ---- Main Buttons ----
   const startBtn = {
     x: width / 2,
-    y: 320,
-    w: 240,
-    h: 80,
-    label: "START",
+    y: 360,
+    w: 500,
+    h: 90,
+    label: "Start cooking before the head chef yells at you",
   };
 
-  const instrBtn = {
+  const gossipBtn = {
     x: width / 2,
-    y: 430,
-    w: 240,
-    h: 80,
-    label: "INSTRUCTIONS",
+    y: 480,
+    w: 500,
+    h: 90,
+    label:
+      "Catch up with my fellow chef about the latest celebrity chef gossip >:)",
   };
 
-  // Draw both buttons
   drawButton(startBtn);
-  drawButton(instrBtn);
+  drawButton(gossipBtn);
 
   // ---- Cursor feedback ----
-  // If the mouse is over either button, show a hand cursor
-  // so the player knows it is clickable.
-  const over = isHover(startBtn) || isHover(instrBtn);
-  cursor(over ? HAND : ARROW);
+  cursor(isHover(startBtn) || isHover(gossipBtn) ? HAND : ARROW);
+
+  // ---- Tip Button (custom styling) ----
+  const tipBtn = { x: width - 90, y: height - 90, w: 120, h: 50, label: "TIP" };
+
+  // Draw tip button rectangle
+  push();
+  rectMode(CENTER);
+  noStroke(); // no border
+  fill(64, 30, 7); // dark brown fill
+  if (isHover(tipBtn)) {
+    fill(90, 45, 15); // slightly lighter when hovered
+  }
+  rect(tipBtn.x, tipBtn.y, tipBtn.w, tipBtn.h, 14);
+  pop();
+
+  // Draw tip button text
+  noStroke();
+  fill(255, 250, 201); // light yellow text
+  textSize(16);
+  textAlign(CENTER, CENTER);
+  text(tipBtn.label, tipBtn.x, tipBtn.y);
+
+  // ---- Hover tip text ----
+  if (isHover(tipBtn)) {
+    fill(64, 30, 7);
+    textSize(14);
+    textAlign(RIGHT, BOTTOM);
+    text("Choose an option to see what happens!", width - 20, height - 140);
+  }
 }
 
 // ------------------------------------------------------------
 // Mouse input for the start screen
 // ------------------------------------------------------------
-// Called from main.js only when currentScreen === "start"
 function startMousePressed() {
-  // For input checks, we only need x,y,w,h (label is optional)
-  const startBtn = { x: width / 2, y: 320, w: 240, h: 80 };
-  const instrBtn = { x: width / 2, y: 430, w: 240, h: 80 };
+  const startBtn = { x: width / 2, y: 360, w: 500, h: 90 };
+  const gossipBtn = { x: width / 2, y: 480, w: 500, h: 90 };
 
-  // If START is clicked, go to the game screen
   if (isHover(startBtn)) {
-    currentScreen = "game";
-  }
-  // If INSTRUCTIONS is clicked, go to the instructions screen
-  else if (isHover(instrBtn)) {
-    currentScreen = "instr";
+    currentScreen = "game"; // Start game
+  } else if (isHover(gossipBtn)) {
+    currentScreen = "instr"; // Go to instructions
   }
 }
 
 // ------------------------------------------------------------
 // Keyboard input for the start screen
 // ------------------------------------------------------------
-// Provides keyboard shortcuts:
-// - ENTER starts the game
-// - I opens instructions
 function startKeyPressed() {
-  if (keyCode === ENTER) {
-    currentScreen = "game";
-  }
-
-  if (key === "i" || key === "I") {
-    currentScreen = "instr";
-  }
+  if (keyCode === ENTER) currentScreen = "game";
+  if (key === "i" || key === "I") currentScreen = "instr";
 }
 
 // ------------------------------------------------------------
 // Helper: drawButton()
 // ------------------------------------------------------------
-// This function draws a button and changes its appearance on hover.
-// It does NOT decide what happens when you click the button.
-// That logic lives in startMousePressed() above.
-//
-// Keeping drawing separate from input/logic makes code easier to read.
 function drawButton({ x, y, w, h, label }) {
   rectMode(CENTER);
 
-  // Check if the mouse is over the button rectangle
   const hover = isHover({ x, y, w, h });
 
-  noStroke();
+  // ---- Draw button rectangle with stroke ----
+  stroke(64, 30, 7); // brown outline for button
+  strokeWeight(2);
 
-  // ---- Visual feedback (hover vs not hover) ----
-  // This is a common UI idea:
-  // - normal state is calmer
-  // - hover state is brighter + more “active”
-  //
-  // We also add a shadow using drawingContext (p5 lets you access the
-  // underlying canvas context for effects like shadows).
   if (hover) {
-    fill(255, 200, 150, 220); // warm coral on hover
-
-    // Shadow settings (only when hovered)
+    fill(255, 200, 150, 220); // hover color
     drawingContext.shadowBlur = 20;
     drawingContext.shadowColor = color(255, 180, 120);
   } else {
-    fill(255, 240, 210, 210); // soft cream base
-
-    // Softer shadow when not hovered
+    fill(255, 250, 201, 210); // normal color
     drawingContext.shadowBlur = 8;
     drawingContext.shadowColor = color(220, 220, 220);
   }
 
-  // Draw the rounded rectangle button
-  rect(x, y, w, h, 14);
-
-  // Important: reset shadow so it does not affect other drawings
+  rect(x, y, w, h, 14); // rectangle with stroke
   drawingContext.shadowBlur = 0;
 
-  // Draw the label text on top of the button
-  fill(40, 60, 70);
-  textSize(28);
+  // ---- Draw text without stroke ----
+  noStroke(); // disable stroke for text
+  fill(64, 30, 7);
+  textSize(18);
   textAlign(CENTER, CENTER);
-  text(label, x, y);
+  textLeading(22);
+  text(label, x, y, w - 40, h - 20);
 }
