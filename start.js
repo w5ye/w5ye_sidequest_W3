@@ -118,20 +118,20 @@ function startMousePressed() {
   const gossipBtn = { x: width / 2, y: 480, w: 500, h: 90 };
 
   if (isHover(startBtn)) {
-    currentScreen = "game"; // Start game
+    currentScreen = "prep"; // Start game
   } else if (isHover(gossipBtn)) {
-    currentScreen = "instr"; // Go to instructions
+    currentScreen = "fired"; // Go to instructions
   }
 }
 
 // ------------------------------------------------------------
 // Keyboard input for the start screen
 // ------------------------------------------------------------
-function startKeyPressed() {
-  if (keyCode === ENTER) currentScreen = "game";
-  if (key === "i" || key === "I") currentScreen = "instr";
-}
 
+function startKeyPressed() {
+  if (key === "1" || key === "A" || key === "a") currentScreen = "prep";
+  else if (key === "2" || key === "B" || key === "B") currentScreen = "fired";
+}
 // ------------------------------------------------------------
 // Helper: drawButton()
 // ------------------------------------------------------------

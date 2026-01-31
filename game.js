@@ -17,7 +17,7 @@ const gameBtn = {
   y: 550, // y position (centre of the button)
   w: 260, // width
   h: 90, // height
-  label: "PRESS HERE", // text shown on the button
+  label: "Start baking", // text shown on the button
 };
 
 // ------------------------------
@@ -25,30 +25,33 @@ const gameBtn = {
 // ------------------------------
 // drawGame() is called from main.js *only*
 // when currentScreen === "game"
+// Main draw function for this screen
+// ------------------------------
 function drawGame() {
   // Set background colour for the game screen
-  background(240, 230, 140);
+  background(255, 243, 153);
 
   // ---- Title and instructions text ----
   fill(0); // black text
   textSize(32);
   textAlign(CENTER, CENTER);
-  text("Game Screen", width / 2, 160);
+  text("Time to bake your dish!", width / 2, 160);
 
   textSize(18);
   text(
-    "Click the button (or press ENTER) for a random result.",
+    "Click the button (or press ENTER) \n" +
+      "to reveal what happened in there (hopefully not burnt...)",
     width / 2,
     210,
   );
 
+  // ---- Draw oven graphic ----
+  drawOven(width / 2, 380, 120, 100); // x, y, width, height
+
   // ---- Draw the button ----
-  // We pass the button object to a helper function
   drawGameButton(gameBtn);
 
   // ---- Cursor feedback ----
-  // If the mouse is over the button, show a hand cursor
-  // Otherwise, show the normal arrow cursor
   cursor(isHover(gameBtn) ? HAND : ARROW);
 }
 
@@ -60,30 +63,59 @@ function drawGame() {
 function drawGameButton({ x, y, w, h, label }) {
   rectMode(CENTER);
 
-  // Check if the mouse is hovering over the button
-  // isHover() is defined in main.js so it can be shared
   const hover = isHover({ x, y, w, h });
 
-  noStroke();
+  // ---- Draw button rectangle with stroke ----
+  stroke(64, 30, 7); // brown outline for button
+  strokeWeight(2);
 
-  // Change button colour when hovered
-  // This gives visual feedback to the player
-  fill(
-    hover
-      ? color(180, 220, 255, 220) // lighter blue on hover
-      : color(200, 220, 255, 190), // normal state
-  );
+  if (hover) {
+    fill(255, 200, 150, 220); // hover color
+    drawingContext.shadowBlur = 20;
+    drawingContext.shadowColor = color(255, 180, 120);
+  } else {
+    fill(255, 250, 201, 210); // normal color
+    drawingContext.shadowBlur = 8;
+    drawingContext.shadowColor = color(220, 220, 220);
+  }
 
-  // Draw the button rectangle
-  rect(x, y, w, h, 14); // last value = rounded corners
+  rect(x, y, w, h, 14); // rectangle with stroke
+  drawingContext.shadowBlur = 0;
 
-  // Draw the button text
-  fill(0);
-  textSize(28);
+  // ---- Draw text without stroke ----
+  noStroke(); // disable stroke for text
+  fill(64, 30, 7);
+  textSize(24);
   textAlign(CENTER, CENTER);
-  text(label, x, y);
+  textLeading(22);
+  text(label, x, y, w - 40, h - 20);
 }
+// Helper: drawOven()
+// ------------------------------
+function drawOven(x, y, w, h) {
+  push();
+  rectMode(CENTER);
 
+  // Oven body
+  fill(200); // light gray
+  stroke(64, 30, 7);
+  strokeWeight(2);
+  rect(x, y, w, h, 8);
+
+  // Oven window
+  fill(255, 255, 200, 180); // light yellow for glass
+  rect(x, y - h * 0.1, w * 0.6, h * 0.5, 4);
+
+  // Oven knobs
+  const knobY = y + h * 0.3;
+  const knobSpacing = w * 0.2;
+  fill(150);
+  for (let i = -1; i <= 1; i++) {
+    ellipse(x + i * knobSpacing, knobY, 15, 15);
+  }
+
+  pop();
+}
 // ------------------------------
 // Mouse input for this screen
 // ------------------------------
@@ -121,8 +153,8 @@ function triggerRandomOutcome() {
   // You can bias this later, for example:
   // random() < 0.7 → 70% chance to win
   if (random() < 0.5) {
-    currentScreen = "win";
+    currentScreen = "cooked";
   } else {
-    currentScreen = "lose";
+    currentScreen = "burnt";
   }
 }
