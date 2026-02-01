@@ -1,48 +1,88 @@
 // NOTE: Do NOT add setup() or draw() in this file
 // setup() and draw() live in main.js
-// This file only defines:
-// 1) drawWin() → what the win screen looks like
-// 2) input handlers → how the player returns to the start screen
-//
-// This file is intentionally very similar to lose.js.
-// The goal is to show that win/lose screens are often
-// simple “end states” with minimal logic.
 
-// ------------------------------------------------------------
-// Main draw function for win screen
-// ------------------------------------------------------------
-// drawWin() is called from main.js
-// only when currentScreen === "win"
-function drawWin() {
-  // Green-tinted background to communicate success
-  background(200, 255, 200);
+// ------------------------------
+// Button data
+// ------------------------------
+const serveBtn = {
+  x: 400,
+  y: 450,
+  w: 300,
+  h: 90,
+  label: "Serve customer",
+};
+
+// ------------------------------
+// Main draw function
+// ------------------------------
+// Called only when currentScreen === "cooked"
+function drawCooked() {
+  // Warm, pleasant background
+  background(220, 255, 220);
 
   fill(0);
   textAlign(CENTER, CENTER);
 
-  // Main success message
-  textSize(40);
-  text("Your dish is ready to serve!", width / 2, 300);
+  // Main message
+  textSize(36);
+  text("Perfectly cooked!", width / 2, 260);
 
-  // Instruction text
-  textSize(20);
-  text("Click or press R to return to Start.", width / 2, 360);
+  // Subtext
+  textSize(18);
+  text(
+    "The dish looks amazing and smells incredible.\nReady to serve?",
+    width / 2,
+    320,
+  );
+
+  // Draw the button
+  drawCookedButton(serveBtn);
+
+  // Cursor feedback
+  cursor(isHover(serveBtn) ? HAND : ARROW);
 }
 
-// ------------------------------------------------------------
-// Mouse input for win screen
-// ------------------------------------------------------------
-// Any mouse click returns the player to the start screen
-function winMousePressed() {
-  currentScreen = "start";
+// ------------------------------
+// Button drawing helper
+// ------------------------------
+function drawCookedButton({ x, y, w, h, label }) {
+  rectMode(CENTER);
+
+  const hover = isHover({ x, y, w, h });
+
+  stroke(64, 30, 7);
+  strokeWeight(2);
+
+  if (hover) {
+    fill(180, 255, 180);
+  } else {
+    fill(200, 255, 200);
+  }
+
+  rect(x, y, w, h, 14);
+
+  noStroke();
+  fill(64, 30, 7);
+  textSize(22);
+  textAlign(CENTER, CENTER);
+  text(label, x, y);
 }
 
-// ------------------------------------------------------------
-// Keyboard input for win screen
-// ------------------------------------------------------------
-// R is commonly used for “restart” in games
-function winKeyPressed() {
-  if (key === "r" || key === "R") {
-    currentScreen = "start";
+// ------------------------------
+// Mouse input
+// ------------------------------
+function cookedMousePressed() {
+  if (isHover(serveBtn)) {
+    currentScreen = "promoted";
+  }
+}
+
+// ------------------------------
+// Keyboard input
+// ------------------------------
+function cookedKeyPressed() {
+  // ENTER serves the customer
+  if (keyCode === ENTER) {
+    currentScreen = "promoted";
   }
 }

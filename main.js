@@ -52,8 +52,9 @@ function draw() {
   else if (currentScreen === "prep") drawPrep();
   else if (currentScreen === "fired") drawFired();
   else if (currentScreen === "game") drawGame();
-  else if (currentScreen === "cooked") drawWin();
-  else if (currentScreen === "burnt") drawLose();
+  else if (currentScreen === "cooked") drawCooked();
+  else if (currentScreen === "burnt") drawBurnt();
+  else if (currentScreen === "promoted") drawPromoted();
 
   // (Optional teaching note)
   // This “if/else chain” is a very common early approach.
@@ -80,8 +81,9 @@ function mousePressed() {
   else if (currentScreen === "game") gameMousePressed();
   // The ?.() means “call this function only if it exists”
   // This prevents errors if a screen doesn’t implement a handler.
-  else if (currentScreen === "cooked") winMousePressed?.();
-  else if (currentScreen === "burnt") loseMousePressed?.();
+  else if (currentScreen === "cooked") cookedMousePressed();
+  else if (currentScreen === "burnt") burntMousePressed();
+  else if (currentScreen === "promoted") promotedMousePressed();
 }
 
 // ------------------------------
@@ -103,8 +105,9 @@ function keyPressed() {
   else if (currentScreen === "fired") firedKeyPressed();
   else if (currentScreen === "prep") prepKeyPressed();
   else if (currentScreen === "game") gameKeyPressed();
-  else if (currentScreen === "cooked") winKeyPressed?.();
-  else if (currentScreen === "burnt") loseKeyPressed?.();
+  else if (currentScreen === "cooked") cookedKeyPressed();
+  else if (currentScreen === "burnt") burntKeyPressed();
+  else if (currentScreen === "promoted") promotedKeyPressed();
 }
 
 // ------------------------------------------------------------
