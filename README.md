@@ -1,28 +1,24 @@
 ## Project Title
 
-GBDA302 Week 3 Example 1: Instructions Screen with Back button
+GBDA302 Side Quest Week 3
 
 ---
 
 ## Authors
 
-Karen Cochrane and David Han
+Wen Ye, w5ye, 21089769
 
 ---
 
 ## Description
 
-This p5.js project demonstrates a simple multi-screen game structure using a state-based approach. The example includes a start screen, an instructions screen with a back button, a basic game screen, and win/lose outcome screens. The focus is on showing how to separate screens into different files, route input based on the current game state, and design simple UI elements such as buttons and keyboard controls.
+Based on the Week 3 Example 1 code, this project utilizes the simple multi-screen game structure to create an interactive story game called "Chef It Up!". The user chooses between 2 options, either leading the progression of the customer's meal, or leading to them getting fired. They can choose between options easily by clicking on the on-screen button, or using keyboard controls (1 / A or 2 / B).
 
 ---
 
-## Learning Goals
+## Setup and Interaction Instructions
 
-- Understand how to manage multiple game states using a shared currentScreen variable
-- Practice separating code across multiple files for readability and maintenance
-- Implement clickable and keyboard-accessible UI buttons
-- Learn how to route draw(), mousePressed(), and keyPressed() logic based on the active screen
-- Build a basic instructions screen with a functional back button
+Choose options A or B to further the story progression. Hover over the tip button to see the instructions. When the story progresses to the "game" stage or the baking stage, the user has a 50/50 chance of either cooking or burning their dish. This lead to the final stage: either they get promoted, or they get fired.
 
 ---
 
@@ -34,6 +30,6 @@ N/A
 
 ## GenAI
 
-The code was written by Dr. Karen Cochrane but she used GenAI to write the comments.
+GenAI was used to ideate and edit this code (originally written by Dr. Karen Cochrane) for the purposes of this side quest.
 
 ---

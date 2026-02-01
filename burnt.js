@@ -4,7 +4,7 @@
 // ------------------------------
 // Button data
 // ------------------------------
-const serveBtn = {
+const stillServeBtn = {
   x: 400,
   y: 450,
   w: 300,
@@ -36,10 +36,13 @@ function drawBurnt() {
   );
 
   // Draw the button
-  drawBurntButton(serveBtn);
+  drawBurntButton(stillServeBtn);
+
+  // Burnt chicken graphic
+  drawBurntChicken(width / 2, 150);
 
   // Cursor feedback
-  cursor(isHover(serveBtn) ? HAND : ARROW);
+  cursor(isHover(stillServeBtn) ? HAND : ARROW);
 }
 
 // ------------------------------
@@ -68,11 +71,44 @@ function drawBurntButton({ x, y, w, h, label }) {
   text(label, x, y);
 }
 
+function drawBurntChicken(x, y) {
+  push();
+  translate(x, y);
+  rectMode(CENTER);
+  ellipseMode(CENTER);
+
+  // Plate
+  fill(220);
+  noStroke();
+  ellipse(0, 20, 160, 40);
+
+  // Burnt chicken body
+  fill(60); // very dark brown / almost black
+  stroke(30);
+  strokeWeight(2);
+  ellipse(0, 0, 120, 70);
+
+  // Burn marks
+  noStroke();
+  fill(30);
+  ellipse(-20, -10, 25, 15);
+  ellipse(15, 5, 30, 18);
+  ellipse(0, 10, 20, 12);
+
+  // Bone
+  stroke(200);
+  strokeWeight(4);
+  line(60, -5, 90, -15);
+  ellipse(92, -15, 10, 10);
+
+  pop();
+}
+
 // ------------------------------
 // Mouse input
 // ------------------------------
 function burntMousePressed() {
-  if (isHover(serveBtn)) {
+  if (isHover(stillServeBtn)) {
     currentScreen = "fired";
   }
 }

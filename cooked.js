@@ -38,6 +38,9 @@ function drawCooked() {
   // Draw the button
   drawCookedButton(serveBtn);
 
+  // Cooked chicken graphic
+  drawCookedChicken(width / 2, 150);
+
   // Cursor feedback
   cursor(isHover(serveBtn) ? HAND : ARROW);
 }
@@ -66,6 +69,37 @@ function drawCookedButton({ x, y, w, h, label }) {
   textSize(22);
   textAlign(CENTER, CENTER);
   text(label, x, y);
+}
+
+function drawCookedChicken(x, y) {
+  push();
+  translate(x, y);
+  rectMode(CENTER);
+  ellipseMode(CENTER);
+
+  // Plate
+  fill(235);
+  noStroke();
+  ellipse(0, 20, 160, 40);
+
+  // Cooked chicken body
+  fill(210, 150, 80); // golden brown
+  stroke(140, 90, 40);
+  strokeWeight(2);
+  ellipse(0, 0, 120, 70);
+
+  // Highlight / shine
+  noStroke();
+  fill(255, 220, 160, 180);
+  ellipse(-20, -10, 40, 20);
+
+  // Bone
+  stroke(245);
+  strokeWeight(4);
+  line(60, -5, 90, -15);
+  ellipse(92, -15, 10, 10);
+
+  pop();
 }
 
 // ------------------------------

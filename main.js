@@ -97,7 +97,7 @@ function keyPressed() {
   // game.js          → gameKeyPressed()
   // win.js           → winKeyPressed()
   // lose.js          → loseKeyPressed()
-  if (key === "R" || "r") {
+  if (key === "R" || key === "r") {
     currentScreen = "start";
   }
 
